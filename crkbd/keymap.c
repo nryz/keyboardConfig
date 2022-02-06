@@ -23,17 +23,11 @@ enum layers {
 #define  NALT    KC_LEFT_ALT
 #define  NSHIFT  KC_LEFT_SHIFT
 
-#define  OSCTRL_KEY   KC_J
-#define  OSHIFT_KEY   KC_K
-#define  OSSUPER_KEY  KC_L
-#define  OSALT_KEY    KC_SEMICOLON
-
 enum keycodes {
   OSSHIFT = SAFE_RANGE,
   OSCTRL,
   OSALT,
   OSSUPER,
-  COSM,
 };
 
 #define  NHASH         S(KC_3)
@@ -74,29 +68,29 @@ enum keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x5_3(
       KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,  /*|*/  KC_Y,  KC_U,    KC_I,     KC_O,     KC_P,
-      KC_A,  KC_S,  KC_D,  KC_F,  KC_G,  /*|*/  KC_H,  OSCTRL,  OSSHIFT,  OSSUPER,  OSALT,
+      KC_A,  KC_S,  KC_D,  KC_F,  KC_G,  /*|*/  KC_H,  KC_J,  KC_K,  KC_L,  OSALT,
       KC_Z,  KC_X,  KC_C,  KC_V,  KC_B,  /*|*/  KC_N,  KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,
-               XXXXXXX,  COSM,  NLANAV,  /*|*/  NLASYM,  NLSPC,  XXXXXXX                                             
+               XXXXXXX,  OSM(MOD_LSFT),  NLANAV,  /*|*/  NLASYM,  NLSPC,  XXXXXXX                                             
   ),
 
   [SYM] = LAYOUT_split_3x5_3(
       NASTERISK,  KC_7,  KC_8,  KC_9,  NTILDE,   /*|*/  NQUOTE,  NDQUOTES,  NLBRACKET,  NRBRACKET,  NEQUAL,
       NPERCENT,   KC_4,  KC_5,  KC_6,  NPIPE,    /*|*/  NPLUS,   NCOLON,    NLPAREN,    NRPAREN,    NEXCLAMATION,
-      KC_0,       KC_1,  KC_2,  KC_3,  NDOLLAR,  /*|*/  NMIN,    NDOLLAR,   NLCURLY,    NRCURLY,    NQUESTION,
+      KC_0,       KC_1,  KC_2,  KC_3,  NDOLLAR,  /*|*/  NMIN,    NUNDERSCORE,   NLCURLY,    NRCURLY,    NQUESTION,
                           XXXXXXX,  NLASYM2,  _______,  /*|*/  _______,  _______,  XXXXXXX
   ),
 
   [SYM2] = LAYOUT_split_3x5_3(
-      XXXXXXX,  KC_F7,  KC_F8,  KC_F9,  KC_F10,  /*|*/  NCARET,   NAND,         NHASH,     NGRAVE,    XXXXXXX,
-      XXXXXXX,  KC_F4,  KC_F5,  KC_F6,  KC_F11,  /*|*/  NAT,      NUNDERSCORE,  NLANGLED,  NRANGLED,  NSEMICOLON,
-      XXXXXXX,  KC_F1,  KC_F2,  KC_F3,  KC_F12,  /*|*/  XXXXXXX,  NBACKSLASH,   NCOMMA,    NDOT,      NSLASH,
+      XXXXXXX,  KC_F7,  KC_F8,  KC_F9,  KC_F10,  /*|*/  XXXXXXX,  NAND,        NHASH,     NGRAVE,    XXXXXXX,
+      XXXXXXX,  KC_F4,  KC_F5,  KC_F6,  KC_F11,  /*|*/  NCARET,   NAT,         NLANGLED,  NRANGLED,  NSEMICOLON,
+      XXXXXXX,  KC_F1,  KC_F2,  KC_F3,  KC_F12,  /*|*/  XXXXXXX,  NBACKSLASH,  NCOMMA,    NDOT,      NSLASH,
                             XXXXXXX,  NLASYM,  _______,  /*|*/  _______,  _______,  XXXXXXX
   ),
 
   [NAV] = LAYOUT_split_3x5_3(
-      KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_NO,    KC_PAGE_UP,    KC_HOME,  KC_END,    KC_NO,
-      KC_DELETE,  KC_BACKSPACE,  KC_TAB,  KC_ENTER,  KC_NO,  /*|*/  KC_LEFT,  KC_DOWN,       KC_UP,    KC_RIGHT,  KC_NO,
-      KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_NO,    KC_PAGE_DOWN,  KC_NO,    KC_NO,     KC_NO,
+      KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_TAB,    KC_DOWN,    KC_UP,  KC_BACKSPACE,    KC_DELETE,
+      KC_NO,  KC_HOME,  KC_PAGE_UP,  KC_PAGE_DOWN,  KC_END,  /*|*/  KC_ESC,  OSCTRL,       OSSHIFT,    OSSUPER,  OSALT,
+      KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_ENTER,    KC_LEFT,  KC_RIGHT,    KC_NO,     KC_NO,
                                   XXXXXXX,  NLAFUN,  _______,  /*|*/  _______,  _______,  XXXXXXX
   ),
   [FUN] = LAYOUT_split_3x5_3(
@@ -115,19 +109,17 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     }
 }
 
-bool is_oneshot_ignored_key(uint16_t keycode, cosm_state *cosm_state) {
+bool is_oneshot_ignored_key(uint16_t keycode) {
   switch (keycode) {
     case NLASYM:
     case NLASYM2:
     case NLANAV:
     case NLAFUN:
-    case COSM:
-      return true;
     case OSSHIFT:
     case OSCTRL:
     case OSALT:
     case OSSUPER:
-      return *cosm_state == cosm_down;
+      return true;
     default:
       return false;
   }
@@ -138,52 +130,24 @@ oneshot_state os_ctrl_state = os_up_unqueued;
 oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_super_state = os_up_unqueued;
 
-cosm_state cosm_state_main = cosm_up;
-uint16_t key_pressed_timer;
-
-bool sym2_oneshot_active = false;
-bool fun_oneshot_active = false;
-
-
-void reset_oneshots(void) {
-  os_shift_state = os_up_unqueued;
-  unregister_code(KC_LSFT);
-  os_ctrl_state = os_up_unqueued;
-  unregister_code(KC_LCTL);
-  os_alt_state = os_up_unqueued;
-  unregister_code(KC_LALT);
-  os_super_state = os_up_unqueued;
-  unregister_code(KC_LCMD);
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if( !update_cosm( &cosm_state_main, &key_pressed_timer, KC_LSFT, COSM, keycode, record)) {
-    return false;
-  }
 
-  if( !update_oneshot( &os_shift_state, &cosm_state_main, KC_LSFT, OSSHIFT, OSHIFT_KEY, keycode, record)) {
-    return false;
-  }
-  if( !update_oneshot( &os_ctrl_state, &cosm_state_main, KC_LCTL, OSCTRL, OSCTRL_KEY, keycode, record)) {
-    return false;
-  }
-  if( !update_oneshot( &os_alt_state, &cosm_state_main, KC_LALT, OSALT, OSALT_KEY, keycode, record)) {
-    return false;
-  }
-  if( !update_oneshot( &os_super_state, &cosm_state_main, KC_LCMD, OSSUPER, OSSUPER_KEY, keycode, record)) {
-    return false;
-  }
-
-  if (get_oneshot_mods() & MOD_MASK_SHIFT) {
-    if (record->event.pressed) {
-      switch (keycode) {
-        case NLSPC:
-          register_code16(KC_ESCAPE);
-          del_oneshot_mods(MOD_MASK_SHIFT);
-          return false;
-      }
-    }
-  }
+  update_oneshot(
+      &os_shift_state, KC_LSFT, OSSHIFT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_ctrl_state, KC_LCTL, OSCTRL,
+      keycode, record
+  );
+  update_oneshot(
+      &os_alt_state, KC_LALT, OSALT,
+      keycode, record
+  );
+  update_oneshot(
+      &os_super_state, KC_LCMD, OSSUPER,
+      keycode, record
+  );
 
   return true;
 }

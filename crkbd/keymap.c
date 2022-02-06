@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "oneshot.h"
+#include "caps_word.h"
 
 enum layers {
   BASE,
@@ -131,6 +132,7 @@ oneshot_state os_alt_state = os_up_unqueued;
 oneshot_state os_super_state = os_up_unqueued;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if(!process_caps_word(keycode, record)) { return false; }
 
   update_oneshot(
       &os_shift_state, KC_LSFT, OSSHIFT,
@@ -148,6 +150,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       &os_super_state, KC_LCMD, OSSUPER,
       keycode, record
   );
+
+  if (get_oneshot_mods() & MOD_MASK_SHIFT) {
+    if (record->event.pressed) {
+      switch (keycode) {
+        case NLSPC:
+        caps_word_set(true);
+        return false;
+      }
+    }
+  }
 
   return true;
 }

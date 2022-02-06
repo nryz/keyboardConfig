@@ -7,3 +7,4 @@ MAGIC_ENABLE = no
 OLED_ENABLE = no
 
 SRC += oneshot.c
+SRC += caps_word.c

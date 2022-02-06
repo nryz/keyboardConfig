@@ -77,27 +77,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       NASTERISK,  KC_7,  KC_8,  KC_9,  NTILDE,   /*|*/  NQUOTE,  NDQUOTES,  NLBRACKET,  NRBRACKET,  NEQUAL,
       NPERCENT,   KC_4,  KC_5,  KC_6,  NPIPE,    /*|*/  NPLUS,   NCOLON,    NLPAREN,    NRPAREN,    NEXCLAMATION,
       KC_0,       KC_1,  KC_2,  KC_3,  NDOLLAR,  /*|*/  NMIN,    NUNDERSCORE,   NLCURLY,    NRCURLY,    NQUESTION,
-                          XXXXXXX,  NLASYM2,  _______,  /*|*/  _______,  _______,  XXXXXXX
+                          XXXXXXX,  _______,  NLASYM2,  /*|*/  _______,  _______,  XXXXXXX
   ),
 
   [SYM2] = LAYOUT_split_3x5_3(
       XXXXXXX,  KC_F7,  KC_F8,  KC_F9,  KC_F10,  /*|*/  XXXXXXX,  NAND,        NHASH,     NGRAVE,    XXXXXXX,
       XXXXXXX,  KC_F4,  KC_F5,  KC_F6,  KC_F11,  /*|*/  NCARET,   NAT,         NLANGLED,  NRANGLED,  NSEMICOLON,
       XXXXXXX,  KC_F1,  KC_F2,  KC_F3,  KC_F12,  /*|*/  XXXXXXX,  NBACKSLASH,  NCOMMA,    NDOT,      NSLASH,
-                            XXXXXXX,  NLASYM,  _______,  /*|*/  _______,  _______,  XXXXXXX
+                            XXXXXXX,  _______,  NLASYM,  /*|*/  _______,  _______,  XXXXXXX
   ),
 
   [NAV] = LAYOUT_split_3x5_3(
       KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_TAB,    KC_DOWN,    KC_UP,  KC_BACKSPACE,    KC_DELETE,
       KC_NO,  KC_HOME,  KC_PAGE_UP,  KC_PAGE_DOWN,  KC_END,  /*|*/  KC_ESC,  OSCTRL,       OSSHIFT,    OSSUPER,  OSALT,
       KC_NO,      KC_NO,         KC_NO,   KC_NO,     KC_NO,  /*|*/  KC_ENTER,    KC_LEFT,  KC_RIGHT,    KC_NO,     KC_NO,
-                                  XXXXXXX,  NLAFUN,  _______,  /*|*/  _______,  _______,  XXXXXXX
+                                  XXXXXXX,  _______,  _______,  /*|*/  NLAFUN,  _______,  XXXXXXX
   ),
   [FUN] = LAYOUT_split_3x5_3(
       KC_NO,  RGB_VAI,  RGB_SAI,  RGB_HUI,  RGB_TOG,  /*|*/  KC_NO,                KC_NO,              KC_NO,            KC_NO,                KC_NO,
       KC_NO,  RGB_VAD,  RGB_SAD,  RGB_HUD,  RGB_MOD,   /*|*/  KC_MEDIA_PREV_TRACK,  KC_AUDIO_VOL_DOWN,  KC_AUDIO_VOL_UP,  KC_MEDIA_NEXT_TRACK,  KC_NO,
       KC_NO,  KC_NO,    KC_NO,    KC_NO,    KC_NO,     /*|*/  KC_MEDIA_PLAY_PAUSE,  KC_AUDIO_MUTE,      KC_NO,            KC_NO,                KC_NO,
-                                  XXXXXXX,  _______,  _______,  /*|*/  _______,  _______,  XXXXXXX
+                                  XXXXXXX,  _______,  _______,  /*|*/  NLANAV,  _______,  XXXXXXX
   ),
 };
 
